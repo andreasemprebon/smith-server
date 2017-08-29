@@ -1,0 +1,13 @@
+extends layout
+
+block append styles
+    link(rel='stylesheet', href='/stylesheets/index.css')
+
+block append scripts
+    script(src='/javascripts/device.js')
+    script(src='/javascripts/gantt.js')
+
+block content
+    div.content
+        div.container.main-container
+            div.gantt

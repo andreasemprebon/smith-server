@@ -1,0 +1,16 @@
+body {
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: #79aec0; /* Per tutti i browser che NON supportano il gradient */
+    background: -webkit-gradient(linear, left top, right top, from(#79aec0), to(#cbe1e9)) fixed;
+}
+
+div.content {
+    margin: 5%;
+    width: 90%;
+    height: 90%;
+}
+
+.container {
+    background: #90bccb;
+    border-radius: 10px;
+}
