@@ -1,10 +1,11 @@
-function SMIThDevice(name, start, end) {
-	this.name 	= name;
-	this.start 	= start;
-	this.end 	= end;
-	this.color 	= "#014c8c";
-}
-
-SMIThDevice.prototype.duration = function() {
-	return this.end - this.start;
-};
+$(document).ready(function () {
+	var device = new SMIThDevice(	globalDevice.name,
+		globalDevice.id,
+		globalDevice.start,
+		globalDevice.end,
+		globalDevice.ip);
+	//device.color = globalDevice.color;
+	device.colorSetup();
+	device.setStartEndHoursAndMinutes();
+	
+});

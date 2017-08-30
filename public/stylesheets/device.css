@@ -1,0 +1,33 @@
+.main-container {
+    background: -webkit-gradient(linear, left top, right top, from(#90bccb), to(#c2dae4)) fixed;
+    width: 80%;
+    height: 100%;
+    padding: 30px; /* COLLEGATO a div.vertical-bar */
+    margin-left: 0px;
+}
+
+.device p.name {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0;
+    padding: 10px;
+}
+
+select.custom-select.time-select {
+    border-radius: 0;
+    border-bottom-right-radius: .25rem;
+    border-top-right-radius: .25rem;
+    margin-right: 5px;
+}
+
+form p.input-description {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}

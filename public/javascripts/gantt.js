@@ -27,10 +27,15 @@ function timestepToDate(timestep, tau) {
 function SMIThGantt() {
 	this.htmlPlotElement = null; // Dove plottare il grafico
 	this.devices = [];
+	this.autoupdate_timer = null;
 }
 
 SMIThGantt.prototype.addDevice = function (device) {
 	this.devices.push( device );
+};
+
+SMIThGantt.prototype.removeAllDevices = function () {
+	this.devices = [];
 };
 
 SMIThGantt.prototype.plotGantt = function() {
@@ -58,7 +63,7 @@ SMIThGantt.prototype.plotGantt = function() {
 		 */
 		var name = $(document.createElement("div"));
 		name.addClass("name");
-		name.html( device.name );
+		name.html( "<a href='./device?id=" + device.id + "'>" + device.name + "</a>" );
 		
 		/**
 		 * BARRA
@@ -123,23 +128,82 @@ SMIThGantt.prototype.plotGantt = function() {
 	}
 };
 
+SMIThGantt.prototype.startAutomaticUpdate = function () {
+	var _this = this;
+	
+	if (this.autoupdate_timer === null) {
+		this.update();
+		this.autoupdate_timer = setInterval(function () {
+			_this.update();
+		}, 5000);
+	}
+
+};
+
+SMIThGantt.prototype.stopAutomaticUpdate = function () {
+	clearInterval(this.autoupdate_timer);
+	this.autoupdate_timer = null;
+};
+
+SMIThGantt.prototype.update = function () {
+	var _this = this;
+	
+	$.ajax({
+		type: "GET",
+		url: "./gantt",
+		cache: false,
+		success: function(html) {
+			var json = false;
+			try {
+				json = $.parseJSON(html);
+			} catch(err) {
+				console.log(err.message);
+				return;
+			}
+			
+			var recieved_devices = json;
+			
+			_this.removeAllDevices();
+			
+			for (var i = 0; i < Object.keys(recieved_devices).length; i++) {
+				var device = recieved_devices[Object.keys(recieved_devices)[i]];
+				var d_temp = new SMIThDevice(device['name'], device['id'], device['start'], device['end'], device['ip']);
+				if (!('color' in device)) {
+					d_temp.color = device_colors[i % device_colors.length];
+				} else {
+					d_temp.color = device['color'];
+				}
+				_this.addDevice(d_temp);
+			}
+			
+			_this.plotGantt();
+			
+		} ,
+		error: function(html) {
+			console.log("Impossibile raggiungere la pagina del server Gantt");
+		}
+	});
+};
+
 /**
- * PROVA
+ * AVVIO DEL GRAFICO GANTT
  */
 $(document).ready(function () {
 	var gantt = new SMIThGantt();
 	gantt.htmlPlotElement = ".gantt";
 	
-	var d1 = new SMIThDevice("Washing Machine", 18, 25);
+	gantt.startAutomaticUpdate();
+	
+	/*var d1 = new SMIThDevice("Washing Machine", 1, 18, 25);
 	d1.color = "#266b8b";
 	
-	var d2 = new SMIThDevice("Dish Washer", 28, 36);
+	var d2 = new SMIThDevice("Dish Washer", 2, 28, 36);
 	d2.color = "#5f7f68";
 	
-	var d3 = new SMIThDevice("Water Heater", 56, 89);
+	var d3 = new SMIThDevice("Water Heater", 3, 56, 89);
 	d3.color = "#445f74";
 	
-	var d4 = new SMIThDevice("Water Heater", 0, 96);
+	var d4 = new SMIThDevice("Water Heater", 4, 0, 96);
 	d4.color = "#108193";
 	
 	gantt.addDevice(d1);
@@ -147,5 +211,5 @@ $(document).ready(function () {
 	gantt.addDevice(d3);
 	gantt.addDevice(d4);
 	
-	gantt.plotGantt();
+	gantt.plotGantt();*/
 });

@@ -1,0 +1,50 @@
+extends layout
+
+block append styles
+    link(rel='stylesheet', href='/stylesheets/device.css')
+
+block append scripts
+    script.
+        globalDevice = !{JSON.stringify(device)}
+    script(src='/javascripts/SMIThDevice.js')
+    script(src='/javascripts/device.js')
+
+block content
+    div.content
+        div.container.main-container
+            div.device
+                p.name= device.name
+                form
+                    div.form-group
+                        p.input-description Starting Time:
+                        div.input-group
+                            div.input-group-addon Hours
+                            select.custom-select.time-select(name="start-hh")
+                                - var hours = 0;
+                                while hours <= 24
+                                    option(value = hours)= hours
+                                    - hours++
+                            div.input-group
+                                div.input-group-addon Minutes
+                                select.custom-select.time-select(name="start-mm")
+                                    - var minutes = 0;
+                                    while minutes <= 45
+                                        option(value = minutes)= minutes
+                                        - minutes += 15
+                    div.form-group
+                        p.input-description Ending Time:
+                        div.input-group
+                            div.input-group-addon Hours
+                            select.custom-select.time-select(name="end-hh")
+                                - var hours = 0;
+                                while hours <= 24
+                                    option(value = hours)= hours
+                                    - hours++
+                            div.input-group
+                                div.input-group-addon Minutes
+                                select.custom-select.time-select(name="end-mm")
+                                    - var minutes = 0;
+                                    while minutes <= 45
+                                        option(value = minutes)= minutes
+                                        - minutes += 15
+                    button.btn.btn-primary(type = "submit") Update Preferences

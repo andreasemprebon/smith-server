@@ -4,6 +4,7 @@
     height: 100%;
     padding: 30px; /* COLLEGATO a div.vertical-bar */
     margin-left: 0px;
+    position: relative;
 }
 
 /**
@@ -36,6 +37,7 @@ div.device .name {
     width: 200px;
     line-height: 20px;
     color: #ffffff;
+    cursor: pointer;
 }
 
 div.device .bar {
