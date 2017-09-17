@@ -169,7 +169,7 @@ SMIThGantt.prototype.update = function () {
 				var device = recieved_devices[Object.keys(recieved_devices)[i]];
 				var d_temp = new SMIThDevice(device['name'], device['id'], device['start'], device['end'], device['ip']);
 				if (!('color' in device)) {
-					d_temp.color = device_colors[i % device_colors.length];
+					d_temp.color = device_colors[d_temp.id % device_colors.length];
 				} else {
 					d_temp.color = device['color'];
 				}
@@ -200,16 +200,20 @@ $(document).ready(function () {
 	var d2 = new SMIThDevice("Dish Washer", 2, 28, 36);
 	d2.color = "#5f7f68";
 	
-	var d3 = new SMIThDevice("Water Heater", 3, 56, 89);
+	var d3 = new SMIThDevice("Boiler", 3, 56, 89);
 	d3.color = "#445f74";
 	
-	var d4 = new SMIThDevice("Water Heater", 4, 0, 96);
-	d4.color = "#108193";
+	var d4 = new SMIThDevice("Battery", 4, 75, 96);
+	d4.color = "#0d6493";
+	
+	var d5 = new SMIThDevice("Solar Panel", 4, 25, 75);
+	d5.color = "#932b1c";
 	
 	gantt.addDevice(d1);
 	gantt.addDevice(d2);
 	gantt.addDevice(d3);
 	gantt.addDevice(d4);
+	gantt.addDevice(d5);
 	
 	gantt.plotGantt();*/
 });

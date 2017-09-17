@@ -14,6 +14,10 @@
     padding: 10px;
 }
 
+.device p.name a {
+    text-decoration: none;
+}
+
 select.custom-select.time-select {
     border-radius: 0;
     border-bottom-right-radius: .25rem;
@@ -30,4 +34,9 @@ form p.input-description {
     border-bottom-color: #ffffff;
     margin-top: 10px;
     margin-bottom: 5px;
+}
+
+form div.input-group {
+    width: auto;
+    margin-right: 5px;
 }

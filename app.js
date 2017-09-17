@@ -9,7 +9,11 @@ var index = require('./routes/index');
 var api   = require('./routes/api');
 //var gantt = require('./routes/gantt');
 
+var cors = require('cors');
+
 var app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -4,8 +4,12 @@ $(document).ready(function () {
 		globalDevice.start,
 		globalDevice.end,
 		globalDevice.ip);
-	//device.color = globalDevice.color;
-	device.colorSetup();
-	device.setStartEndHoursAndMinutes();
+	
+	device.getInfo();
+	
+	$("form[name='web-constraints']").on("click", "button", function (e) {
+		device.saveConstraints();
+		e.preventDefault();
+	});
 	
 });

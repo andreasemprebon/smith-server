@@ -24,7 +24,7 @@ router.get('/gantt', function(req, res, next) {
  **************/
 
 router.get('/device', function(req, res, next) {
-    var device_id = req.query.id;
+	var device_id = req.query.id;
     
     var devices = ganttServer.getDevices();
     if (!(parseInt(device_id) in devices)) {
