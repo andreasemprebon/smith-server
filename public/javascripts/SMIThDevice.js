@@ -1,5 +1,14 @@
 var device_colors = ["#108193", "#266b8b", "#5f7f68", "#445f74"];
 
+function hexToRgb(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
+
 function SMIThDevice(name, id, start, end, ip) {
 	this.name 	= name;
 	this.start 	= start;
@@ -7,6 +16,9 @@ function SMIThDevice(name, id, start, end, ip) {
 	this.ip 	= ip;
 	this.id		= id;
 	this.color 	= device_colors[this.id % device_colors.length];
+	this.rgb_color = hexToRgb(this.color);
+	this.cycle  = new Array(96);
+	
 }
 
 SMIThDevice.prototype.duration = function() {
@@ -37,9 +49,11 @@ SMIThDevice.prototype.getInfo = function () {
 			}
 			
 			console.log(json);
-			
+			var show_update_btn = false;
 			for (var key in json) {
 				if (json.hasOwnProperty(key)) {
+					show_update_btn = true;
+					
 					var select_html = "<div class='form-group'>";
 					select_html += "<p class='input-description'>" + json[key]['display_name'] + "</p>";
 					select_html += "<div class='input-group'>";
@@ -120,8 +134,14 @@ SMIThDevice.prototype.getInfo = function () {
 				}
 			}
 			
-			var btn_html = "<button class='btn btn-primary' type='submit'>Update Preferences</button>";
-			$("form[name='web-constraints']").append(btn_html);
+			if (show_update_btn) {
+				$(".web-conf").show();
+				var btn_html = "<button class='btn btn-primary' type='submit'>Update Preferences</button>";
+				$("form[name='web-constraints']").append(btn_html);
+			} else {
+				$(".web-conf").hide();
+			}
+			
 			_this.colorSetup();
 			
 		} ,
@@ -129,6 +149,65 @@ SMIThDevice.prototype.getInfo = function () {
 			console.log("Impossibile raggiungere la pagina di gestione del device" + html );
 		}
 	});
+};
+
+SMIThDevice.prototype.plotCycleGraph = function () {
+	var _this = this;
+	
+	var ctx = document.getElementById("cycleChart");
+	
+	var labels_array = [];
+	
+	for (var i=0; i<=96; i++) {
+		var t = _this.getHourMinutesFromTimeStep(i);
+		labels_array.push( ((t.hh < 10) ? ("0" + t.hh) : t.hh)
+			+ ":"
+			+ ((t.mm < 10) ? ("0" + t.mm) : t.mm)  );
+	}
+	
+	var config = {
+		type: 'line',
+		data: {
+			labels: labels_array,
+			datasets: [{
+				label: "Power",
+				backgroundColor: "rgba(" + _this.rgb_color.r + "," + _this.rgb_color.g + "," + _this.rgb_color.b + ",0.1)",
+				borderColor: _this.color,
+				data: _this.cycle,
+				fill: true,
+				pointRadius : 0
+			}]
+		},
+		options: {
+			maintainAspectRatio: false,
+			title : {
+				display : false
+			},
+			legend : {
+				display: false
+			},
+			scales: {
+				xAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Timestep'
+					}
+				}],
+				yAxes: [{
+					display: true,
+					scaleLabel: {
+						display: true,
+						labelString: 'Power'
+					}
+				}]
+			}
+		}
+	};
+	
+	
+	
+	var myCycleChart = new Chart(ctx, config);
 };
 
 SMIThDevice.prototype.saveConstraints = function () {
@@ -163,6 +242,7 @@ SMIThDevice.prototype.saveConstraints = function () {
 		cache: false,
 		success: function(html) {
 			console.log(html);
+			window.location.href = "/";
 		} ,
 		error: function(html) {
 			console.log("Impossibile raggiungere la pagina di gestione del device");

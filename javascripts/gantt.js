@@ -30,7 +30,7 @@ GanttServer.prototype.start = function() {
 		json_device['addedAt'] = Date.now();
 		_this.devices[id] = json_device;
 		
-		console.log("Dispositivo: " + json_device['name'] + " " + id);
+		console.log("Dispositivo: " + json_device['name'] + " " + id + " - Time: " + _this.devices[id]['addedAt']);
 		
 		//console.log(json_device);
 		//console.log(rinfo);

@@ -6,6 +6,7 @@ block append styles
 block append scripts
     script.
         globalDevice = !{JSON.stringify(device)}
+    script(src='/javascripts/Chart.bundle.min.js')
     script(src='/javascripts/SMIThDevice.js')
     script(src='/javascripts/device.js')
 
@@ -16,4 +17,8 @@ block content
                 p.name
                     a(href="./") Home
                     span  > #{device.name}
+            div.chart-container
+                canvas#cycleChart(width="100%",height="250px")
+        div.container.main-container.web-conf
+            div.device
                 form(name="web-constraints")

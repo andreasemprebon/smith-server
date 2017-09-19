@@ -5,7 +5,9 @@ $(document).ready(function () {
 		globalDevice.end,
 		globalDevice.ip);
 	
+	device.cycle = globalDevice.cycle;
 	device.getInfo();
+	device.plotCycleGraph();
 	
 	$("form[name='web-constraints']").on("click", "button", function (e) {
 		device.saveConstraints();
