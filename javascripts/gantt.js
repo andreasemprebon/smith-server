@@ -2,7 +2,7 @@ var dgram 	= require('dgram');
 
 var kPORT = 5556;
 
-var kSECONDS_FOR_REMOVE = 60;
+var kSECONDS_FOR_REMOVE = 30;
 
 function GanttServer() {
 	this.client = null; // Connessione a MongoDB
